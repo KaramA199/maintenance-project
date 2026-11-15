@@ -4,7 +4,7 @@
 
 | Item | Value |
 |---|---|
-| Language | Python 3.8+ (tested with Python 3.13 on Windows 11) |
+| Language | Python 3.8+ (tested with Python 3.14.3 and SQLite 3.50.4 on Windows 11) |
 | Database | SQLite via the standard-library `sqlite3` module |
 | External dependencies | None (`sqlite3` and `datetime` are built in) |
 | Entry point | `library.py` (single file, ~215 lines including blanks) |
