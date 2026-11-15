@@ -46,8 +46,8 @@
 
 | Member | Responsibilities |
 |---|---|
-| **Karam M. Ali** (leader/PM) | Repo, charter, board, risk log; legacy setup and requirements confirmation; project-management section of the report; final review and submission |
-| **Abdulwahab Najib** | Business rules, DB schema, architecture diagram, class/module table; final metrics and before/after comparison; knowledge-acquired section; assembles report, slides and video |
+| **Karam M. Ali** (leader/PM) | Repo, charter, board, risk log; legacy setup; project-management section and knowledge-acquired section of the report; assembling the report, slides and demo video; final review and submission |
+| **Abdulwahab Najib** | Requirements confirmation, business rules, DB schema, architecture diagram, class/module table; final metrics and before/after comparison |
 | **Nasser Ali Atef** | Dependency analysis, code smells, baseline metrics, Commit 02; MR-01 and MR-02 (analysis, design, implementation), Commit 03 |
 | **Muayyad Alnouman** | Behavior tests; refactoring; Equipment reuse analysis; final system clean-up; Commits 04–06 |
 
