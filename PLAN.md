@@ -13,7 +13,7 @@ The task list (43 tasks, with owners and dependencies) is the table at the start
 4. **Measure before changing.** Nasser records the baseline metrics (task #14) on the unchanged legacy code and writes down the tool and settings. Abdulwahab reuses the same tool and settings for the final measurement (task #34).
 5. **Behavior must not change** during refactoring. Run the tests from task #23 before and after.
 6. **Write your own words and cite sources.** The course treats copied text and uncited AI output as plagiarism, with zero marks. AI tools may help you draft and check, but you must read, verify and rewrite what they produce, and you must be able to explain every line you submit in the Q&A. Add every external source (books, articles, tool docs, and AI tools you used) to your task document under "Sources".
-7. **Every task leaves documentation** (section 3) and, where useful, screenshots.
+7. **Every task leaves documentation** (section 3) and, where useful, screenshots. When the task is done, write its part of the Word report too (section 5).
 8. **Keep the board current.** Move your card to In Progress when you start and to Done when your pull request merges.
 9. **Ask early.** If you are blocked or will miss a date, say so in the group chat the same day.
 
@@ -91,10 +91,45 @@ A milestone commit marks the end of a phase. The owner makes it on `main`, after
 
 Commits 04 and 05 must go in that order, because the course checks that the history shows the evolution in sequence.
 
-## 5. Keeping the Word task table current
+## 5. Writing your part of the report
 
-The task table at the start of `SE431.docx` shows progress. When a task is done (pull request merged and card moved to Done), **strike through the whole row's text** (Word: select the row, Home, Strikethrough). Karam updates it from the board every evening, so members only need to keep the board right.
+The report is one shared Word file, `SE431-ProjectReport.docx`. When your task is done (your pull request is merged), you or your agent write the matching section of the report. No two members edit the same place at once, so touch only the sections listed for your tasks.
+
+| Task | Report section | Words |
+|---|---|---|
+| #7 | 3.1 Requirements Confirmation (Table 2) | 50 |
+| #8 | 3.2 Business Rules | 60 |
+| #9 | 3.3 Database Structure (Figure 2) | 50 |
+| #10 | 3.4 Current Architecture (Figure 3) | 60 |
+| #11 | 3.5 Class/Module Responsibilities (Table 3) | 40 |
+| #12 | 3.6 Dependency Analysis (Figure 4) | 70 |
+| #13 | 3.7 Code Smells and Architectural Problems (Table 4) | 70 |
+| #14 | 7.1 Measurement Approach (tool and settings) and the Legacy System column of Table 9 | 50 |
+| #16 to #18 | 4.1 MR-01 (4.1.1 to 4.1.3, Table 5) | 170 |
+| #19 to #21 | 4.2 MR-02 (4.2.1 to 4.2.3, Table 6) | 170 |
+| #23 | 5.1 Behavior-Preservation Tests | 80 |
+| #24 to #27 | 5.2 Refactoring Log (Table 7) and 5.3 Verification | 220 |
+| #28 | 6.1 Equipment Borrowing System Overview | 60 |
+| #29 | 6.2 Commonality and Variability Analysis (Table 8) | 70 |
+| #30 | 6.3 Reusable Domain Architecture (Figure 5) | 70 |
+| #32 | Figure 6 (final architecture) in 7.2 | caption only |
+| #33 | 8.1 Repository and 8.2 Commit History (Table 10, Figure 7) | 100 |
+| #34, #35 | 7.2 Results (Table 9, Reengineered System column) and 7.3 Discussion | 150 |
+| #37 | 9 Knowledge Acquired (Table 11) | 100 |
+| #36, #38, #41 | 1 Introduction, 2 Project Management, 10 Conclusion, References | Karam |
+
+The whole report is about 2000 words, so keep to the budget. Tables, figures and captions do not count toward it.
+
+How to write your section:
+- Be brief. Use the "Report summary" from your task file as the starting point, then shorten it. Put the detail in the table or figure, not in the prose.
+- Replace the amber placeholder text in your section with your own text. Delete the amber instruction line for your section only. Use the same font and size as the text around it, and keep the heading as it is.
+- Fill the existing table for your section. Add rows if you need them. Do not change the table style.
+- Insert screenshots and diagrams where the placeholder is, keep the caption, and keep its figure number. Karam fixes any numbering gaps at the end.
+- Do not add references yourself. List your sources in your task file, and Karam compiles the References section.
+- Check that you have not edited text outside your section before you save. Close the file when you finish, so others can open it.
+
+When you finish a task, also **strike through that task's row** in the task table at the start of the Word file (select the row text, Home, Strikethrough). Strike only your own rows. Karam checks the table against the board.
 
 ## 6. If you use an AI agent
 
-Give the agent this file and your task number. The agent must follow sections 1, 3 and 4, work on a branch, and stop before merging. You review its output before opening the pull request. List the AI tool under "Sources" in your task document.
+Give the agent this file and your task number. The agent must follow sections 1, 3, 4 and 5, work on a branch, and stop before merging. After the pull request merges, the agent writes your report section as described in section 5. You review its output before opening the pull request and before you save the report. List the AI tool under "Sources" in your task document.
