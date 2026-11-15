@@ -51,5 +51,6 @@ See `docs/00-environment-setup.md` for details.
 
 ## Working agreement
 
+- **Branch, then PR:** do each task on its own branch (`<name>/<short-task>`) and open a pull request into `main`; do not commit directly to `main`.
 - Push your own work in your own commits; the milestone commits above only mark the end of each phase.
 - Do not change `library.py` until the milestone before your task is pushed.

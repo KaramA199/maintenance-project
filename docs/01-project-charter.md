@@ -59,7 +59,8 @@ GitHub (repo, Projects board, issues), GitHub Desktop, Python 3 + SQLite, a metr
 
 ## 7. Working rules
 
-- Push your own work in your own commits; milestone commits only mark the end of a phase.
+- **Branch, then PR:** never commit directly to `main`. Do each task on its own branch (`<name>/<short-task>`, e.g. `nasser/mr01-design`), open a pull request into `main`, and have another member glance at it before merging.
+- Push your own work in your own commits; milestone commits only mark the end of a phase and are made on `main` after the related PRs are merged.
 - Do not change `library.py` before the milestone it depends on is pushed (see risk log).
 - Track progress on the board; raise blockers there or in the group chat the same day.
 - Cite every external source (plagiarism is zero tolerance).
