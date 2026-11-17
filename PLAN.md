@@ -16,6 +16,7 @@ The task list (43 tasks, with owners and dependencies) is the table at the start
 7. **Every task leaves documentation** (section 3) and, where useful, screenshots. When the task is done, write its part of the Word report too (section 5).
 8. **Keep the board current.** Move your card to In Progress when you start and to Done when your pull request merges.
 9. **Ask early.** If you are blocked or will miss a date, say so in the group chat the same day.
+10. **Use the course material as the method reference.** The full course is in `docs/reference/maintenance-course.pdf`. When a task asks for a technique (impact analysis, refactoring, program comprehension, reengineering, reuse and domain engineering), follow how the course teaches it and cite the page number under "Sources". Do not invent methods or use techniques the course did not cover. If you need something outside the course, say so in your task file and cite the outside source.
 
 ## 2. Order of work
 
@@ -132,4 +133,4 @@ When you finish a task, also **strike through that task's row** in the task tabl
 
 ## 6. If you use an AI agent
 
-Give the agent this file and your task number. The agent must follow sections 1, 3, 4 and 5, work on a branch, and stop before merging. After the pull request merges, the agent writes your report section as described in section 5. You review its output before opening the pull request and before you save the report. List the AI tool under "Sources" in your task document.
+Give the agent this file and your task number. The agent must follow sections 1, 3, 4 and 5, read the relevant chapters of `docs/reference/maintenance-course.pdf` before starting, work on a branch, and stop before merging. After the pull request merges, the agent writes your report section as described in section 5. You review its output before opening the pull request and before you save the report. List the AI tool under "Sources" in your task document.
