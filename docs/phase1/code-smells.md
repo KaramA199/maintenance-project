@@ -65,7 +65,9 @@ Eight smells and six problems were found, listed in Table 4. borrow() is a long 
 
 ## Screenshots
 
-To add: a screenshot of the `ValueError` crash for AP5, saved as `docs/img/phase1/crash-non-numeric-id.png`. To reproduce it, run `python library.py`, choose `2`, enter `S1`, then `abc`.
+![ValueError when a non-numeric book ID is entered](../img/phase1/crash-non-numeric-id.png)
+
+*Figure: AP5. Entering `abc` as the book ID in Borrow stops the legacy program with a ValueError at line 199, 18/11/2026. Image rendered from the captured terminal output.*
 
 ## Sources
 
