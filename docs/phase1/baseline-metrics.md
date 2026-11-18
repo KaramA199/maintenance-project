@@ -75,7 +75,7 @@ All Henry–Kafura values are 0. The call structure is flat: `main()` calls the 
 
 ### Report handoff: section 7.1 (50-word budget)
 
-Both versions are measured with radon 6.0.1 (raw, cc and hal, default settings) and the project script tools/metrics.py. These count lines, functions, classes, global variables, cyclomatic complexity, fan-in and fan-out, and SQL statements. The legacy figures, taken before any code change, form the Legacy System column of Table 9.
+The tools we used were radon 6.0.1 and tools/metrics.py, which count lines, functions, classes, global variables, cyclomatic complexity and SQL statements. The same tools and settings will be used for the final measurement to ensure a fair judgment, because if we change the environment it will not be a fair judgment.
 
 ### Note on the maintainability index
 
