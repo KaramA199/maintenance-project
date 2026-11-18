@@ -73,6 +73,10 @@ All Henry–Kafura values are 0. The call structure is flat: `main()` calls the 
 - `borrow()` has the highest complexity and the most output calls. This matches the course project's choice of `borrow()` as the refactoring target (#24).
 - There are no comments and no automated tests. Muayyad's tests (#23) are the safety net before any change.
 
+### Report handoff: section 7.1 (50-word budget)
+
+Both versions are measured with radon 6.0.1 (raw, cc and hal, default settings) and the project script tools/metrics.py. These count lines, functions, classes, global variables, cyclomatic complexity, fan-in and fan-out, and SQL statements. The legacy figures, taken before any code change, form the Legacy System column of Table 9.
+
 ### Note on the maintainability index
 
 radon also reports a maintainability index of 37.44 (rank A) for `library.py`. The course does not cover this metric, so it is reported only for information and is not in Table 9. The formula is described in the radon documentation.
