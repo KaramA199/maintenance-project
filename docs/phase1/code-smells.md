@@ -61,7 +61,7 @@ These are business-rule gaps, passed to Abdulwahab's business-rules work (#8) fo
 
 ### Report handoff: section 3.7 (70-word budget)
 
-Table 4 lists eight code smells and six architectural problems. borrow() is a long method (complexity 6) with duplicated validation blocks. Business values are hard-coded, names are unclear, and there are no comments or tests. User interface, rules and SQL are mixed in the same functions with no data-access layer. Availability is one flag per title, and a non-numeric book ID crashes the program.
+Eight smells and six problems were found, listed in Table 4. borrow() is a long method that does five jobs, SQL, business rules and print statements are mixed, and there is no data-access layer. Availability is one flag per title, so copies cannot be counted, and the program crashes when a non-numeric book ID is entered.
 
 ## Screenshots
 
