@@ -165,7 +165,7 @@ For impact analysis on MR-01 and MR-02 (tasks #16 and #19), the rows above are t
 
 ### Report handoff: section 3.6 (70-word budget)
 
-The call graph is flat: main() calls the four operations, which call nothing else. The real coupling is through the database. One SQLite connection reaches every operation, and borrow(), return_book() and search_books() share state through the books.available flag and the loans table. Figure 4 shows these dependencies. A change to the database or to availability ripples into four of the five functions.
+The call graph was flat, as main() only calls the other functions, but there is hidden coupling through the database, as some functions read and write the same tables. Changing the database or books.available will affect 4 of the 5 functions, as those four are all using SQL statements. Figure 4 shows these dependencies.
 
 ## Screenshots
 
