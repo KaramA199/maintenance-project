@@ -132,7 +132,9 @@ main                          0       4                  0         0            
 
 ## Screenshots
 
-To add: a screenshot of the commands above run in a terminal, saved as `docs/img/phase1/baseline-metrics.png`.
+![radon cc and raw output on the legacy library.py](../img/phase1/baseline-metrics.png)
+
+*Figure: radon 6.0.1 cyclomatic complexity and raw size output for the unchanged library.py (commit b3ed8d3), 18/11/2026. Image rendered from the captured terminal output.*
 
 ## Sources
 
