@@ -1,5 +1,5 @@
 # Dependency Analysis of the Legacy System
-Task: #12 | Owner: Nasser Ali Atef | Status: draft | Date: 18/11
+Task: #12 | Owner: Nasser Ali Atef | Status: done | Date: 18/11
 
 ## Report summary
 
@@ -65,7 +65,7 @@ C = creates the table, I = inserts, R = reads, U = updates.
 | `return_book()` | – | U (`available` = 1) | R (active loan, `due_date`), U (`returned` = 1) |
 | `main()` | – | – | – (only closes the connection) |
 
-`books.available` is written by two functions and read by two. `loans` is written by two functions and read by two. These are the two places where functions depend on each other with no call between them.
+`books.available` is written by three functions (`setup()` seeds it, `borrow()` and `return_book()` change it) and read by two. `loans` is written by two functions and read by two. These are the two places where functions depend on each other with no call between them.
 
 ### Figure 4: dependency graph
 
