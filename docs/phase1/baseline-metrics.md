@@ -1,5 +1,5 @@
 # Baseline Metrics of the Legacy System
-Task: #14 | Owner: Nasser Ali Atef | Status: draft | Date: 18/11
+Task: #14 | Owner: Nasser Ali Atef | Status: done | Date: 18/11
 
 ## Report summary
 
@@ -115,6 +115,7 @@ $ python -m radon mi -s library.py
 library.py - A (37.44)
 
 $ python tools/metrics.py library.py
+Files: library.py
 Functions: 5   Classes: 0   Global variables: 1 ['library.py:DB']
 SQL statements executed: 17
 Functions touching the database: 4 of 5
