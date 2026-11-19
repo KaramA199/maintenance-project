@@ -75,7 +75,7 @@ All Henry–Kafura values are 0. The call structure is flat: `main()` calls the 
 
 ### Report handoff: section 7.1 (50-word budget)
 
-We used radon 6.0.1 and tools/metrics.py, which count lines, functions, classes, global variables, cyclomatic complexity and SQL statements. The same tools and settings will be used for the final measurement to ensure a fair judgment, because if we change the environment it will not be a fair judgment.
+We used radon 6.0.1 and tools/metrics.py, which count lines, functions, classes, global variables, cyclomatic complexity and SQL statements. The same tools and settings will be used for the final measurement, because different tools count lines and complexity differently, so only the same environment gives a fair judgment.
 
 ### Note on the maintainability index
 
