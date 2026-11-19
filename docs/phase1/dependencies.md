@@ -165,7 +165,7 @@ For impact analysis on MR-01 and MR-02 (tasks #16 and #19), the rows above are t
 
 ### Report handoff: section 3.6 (70-word budget)
 
-The call graph was flat, as main() only calls the other functions, but there is hidden coupling through the database, as some functions read and write the same tables. Changing the database or books.available will affect 4 of the 5 functions, as those four are all using SQL statements. Figure 4 shows these dependencies.
+The call graph was flat, as main() only calls the other functions, but there is hidden coupling through the database, as some functions read and write the same tables. Changing the database will affect all 5 functions, as four of them use SQL statements and main() closes the connection, while changing books.available will affect 4 of them. Figure 4 shows these dependencies.
 
 ## Screenshots
 
