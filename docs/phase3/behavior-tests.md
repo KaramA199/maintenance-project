@@ -9,7 +9,7 @@ Before changing any code, we wrote automated tests that record how the legacy sy
 
 ### Why these tests (course method)
 
-- The IEEE 1219 maintenance process says to create a test suite and select regression test cases during design, then run regression tests during implementation (course PDF pp.88–89). Every type of maintenance ends with regression tests (p.286).
+- The IEEE 1219 maintenance process says to create a test suite and select regression test cases during design, then run regression tests during implementation (course PDF pp.88–89). Adaptive, perfective and corrective maintenance all end with regression tests (p.286).
 - Refactoring must keep the program's input/output behavior the same as before (p.274). This is the second activity of the refactoring process (p.271). We can only prove that if we record the behavior first, so these tests were written on the unchanged legacy code (Commit 01).
 
 ### What is tested
@@ -36,6 +36,7 @@ The test data is what `setup()` creates: members S1 (Ali) and S2 (Sara), both AC
 - Each test runs inside a new temporary folder, so `setup()` creates a fresh `library.db` and the real database is never touched.
 - A small helper (`call`) runs a library function and captures what it prints, so both the return value and the message can be checked.
 - A second helper (`run_sql`) prepares data that the menu cannot create, for example an inactive member, a 4th book, or a due date in the past.
+- After MR-02 the system can use a JSON or an SQLite store. The tests select the SQLite store (`LMS_BACKEND=sqlite`), so the same SQL preparation works on the legacy code and on the MR-02 code.
 
 ### How to run
 
@@ -50,6 +51,7 @@ python -m unittest discover -s tests -v
 | Version of the code | Result |
 |---|---|
 | Legacy system (Commit 01, `library.py` unchanged) | 12 / 12 pass |
+| MR-02 draft branch, which includes MR-01 (SQLite store), checked on 21/11 | 11 / 12 pass. Only test 07 fails, as expected after MR-01 (see the note below) |
 
 The same command will be run again for MR-02 (task #21) and after the refactorings (task #27), and the results added to this table.
 

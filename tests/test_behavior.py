@@ -17,6 +17,10 @@ import tempfile
 import unittest
 from datetime import datetime, timedelta
 
+# After MR-02 the system can store data in JSON or SQLite. The tests use the
+# SQLite store so they can prepare data with SQL. The legacy code ignores this.
+os.environ.setdefault("LMS_BACKEND", "sqlite")
+
 import library
 
 
@@ -29,6 +33,9 @@ class LibraryBehaviorTest(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory(ignore_cleanup_errors=True)
         os.chdir(self.tmp.name)
         self.db = library.setup()
+        # The legacy setup() returns the SQLite connection itself; after MR-02
+        # it returns a storage object that keeps the connection in ".db".
+        self.conn = getattr(self.db, "db", self.db)
 
     def tearDown(self):
         self.db.close()
@@ -44,8 +51,8 @@ class LibraryBehaviorTest(unittest.TestCase):
 
     def run_sql(self, sql, params=()):
         """Change the test data directly (only used to prepare a test)."""
-        self.db.execute(sql, params)
-        self.db.commit()
+        self.conn.execute(sql, params)
+        self.conn.commit()
 
     # ---------- Search (R6) ----------
 
@@ -102,7 +109,8 @@ class LibraryBehaviorTest(unittest.TestCase):
 
     def test_08_fourth_active_loan_is_refused(self):
         """BR05 / R2: a member can have at most 3 active loans."""
-        self.run_sql("INSERT INTO books VALUES (4,'Test Book','Test Author',1)")
+        self.run_sql("INSERT INTO books (id, title, author, available) "
+                     "VALUES (4, 'Test Book', 'Test Author', 1)")
         for book_id in (1, 2, 3):
             result, _ = self.call(library.borrow, "S1", book_id)
             self.assertTrue(result)
@@ -113,7 +121,7 @@ class LibraryBehaviorTest(unittest.TestCase):
     def test_09_loan_period_is_14_days(self):
         """BR06 / R4: the due date is exactly 14 days after borrowing."""
         self.call(library.borrow, "S1", 1)
-        borrow_date, due_date = self.db.execute(
+        borrow_date, due_date = self.conn.execute(
             "SELECT borrow_date, due_date FROM loans").fetchone()
         period = datetime.fromisoformat(due_date) - datetime.fromisoformat(borrow_date)
         self.assertEqual(period, timedelta(days=14))
