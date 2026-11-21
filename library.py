@@ -1,81 +1,12 @@
 
-import sqlite3
 from datetime import datetime, timedelta
-DB = "library.db"
+import storage
 def setup():
-    db = sqlite3.connect(DB)
-    c = db.cursor()
-    c.execute("""
-        CREATE TABLE IF NOT EXISTS members(
-            id TEXT PRIMARY KEY,
-            name TEXT,
-            status TEXT
-        )
-    """)
-
-    c.execute("""
-        CREATE TABLE IF NOT EXISTS books(
-            id INTEGER PRIMARY KEY,
-            title TEXT,
-            author TEXT,
-            available INTEGER,
-            total_copies INTEGER
-        )
-    """)
-
-    # MR-01: "available" now holds the number of copies on the shelf and
-    # "total_copies" the number the library owns. A database created by the
-    # legacy version has no total_copies column; each of its books had one copy.
-    c.execute("PRAGMA table_info(books)")
-    if "total_copies" not in [col[1] for col in c.fetchall()]:
-        c.execute("ALTER TABLE books ADD COLUMN total_copies INTEGER")
-        c.execute("UPDATE books SET total_copies = 1")
-
-    c.execute("""
-        CREATE TABLE IF NOT EXISTS loans(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            member_id TEXT,
-            book_id INTEGER,
-            borrow_date TEXT,
-            due_date TEXT,
-            returned INTEGER
-        )
-    """)
-
-    db.commit()
-
-    c.execute(
-        "INSERT OR IGNORE INTO members VALUES ('S1','Ali','ACTIVE')"
-    )
-
-    c.execute(
-        "INSERT OR IGNORE INTO members VALUES ('S2','Sara','ACTIVE')"
-    )
-
-    c.execute(
-        "INSERT OR IGNORE INTO books VALUES (1,'Clean Code','Robert Martin',3,3)"
-    )
-
-    c.execute(
-        "INSERT OR IGNORE INTO books VALUES (2,'Refactoring','Martin Fowler',2,2)"
-    )
-
-    c.execute(
-        "INSERT OR IGNORE INTO books VALUES (3,'Design Patterns','Gamma et al.',2,2)"
-    )
-
-    db.commit()
-    return db
+    # MR-02: the database is reached only through the data-access layer in
+    # storage.py, which picks the store (JSON by default, or legacy SQLite).
+    return storage.open_storage()
 def search_books(db, text):
-    c = db.cursor()
-    c.execute(
-        """SELECT id,title,author,available,total_copies
-           FROM books
-           WHERE title LIKE ? OR author LIKE ?""",
-        ("%" + text + "%", "%" + text + "%")
-    )
-
-    rows = c.fetchall()
+    rows = db.search_books(text)
 
     for row in rows:
         print(row[0], row[1], "-", row[2],
@@ -84,13 +15,7 @@ def search_books(db, text):
 
     return rows
 def borrow(db, member_id, book_id):
-    c = db.cursor()
-    c.execute(
-        "SELECT id,status FROM members WHERE id=?",
-        (member_id,)
-    )
-
-    member = c.fetchone()
+    member = db.find_member(member_id)
 
     if not member:
         print("Member not found")
@@ -100,12 +25,7 @@ def borrow(db, member_id, book_id):
         print("Member is not active")
         return False
 
-    c.execute(
-        "SELECT available FROM books WHERE id=?",
-        (book_id,)
-    )
-
-    book = c.fetchone()
+    book = db.find_book(book_id)
 
     if not book:
         print("Book not found")
@@ -115,50 +35,20 @@ def borrow(db, member_id, book_id):
         print("Book is unavailable")
         return False
 
-    c.execute(
-        """SELECT COUNT(*) FROM loans
-           WHERE member_id=? AND returned=0""",
-        (member_id,)
-    )
-
-    if c.fetchone()[0] >= 3:
+    if db.count_active_loans(member_id) >= 3:
         print("Borrowing limit reached")
         return False
 
     today = datetime.now()
     due = today + timedelta(days=14)
 
-    c.execute(
-        """INSERT INTO loans
-           (member_id,book_id,borrow_date,due_date,returned)
-           VALUES(?,?,?,?,0)""",
-        (
-            member_id,
-            book_id,
-            today.isoformat(),
-            due.isoformat()
-        )
-    )
-
-    c.execute(
-        "UPDATE books SET available=available-1 WHERE id=?",
-        (book_id,)
-    )
-
-    db.commit()
+    db.add_loan(member_id, book_id, today.isoformat(), due.isoformat())
 
     print("Book borrowed. Due:", due.date())
 
     return True
 def return_book(db, member_id, book_id):
-    c = db.cursor()
-    c.execute(
-        """SELECT id,due_date FROM loans
-           WHERE member_id=? AND book_id=? AND returned=0""",
-        (member_id, book_id)
-    )
-
-    loan = c.fetchone()
+    loan = db.find_active_loan(member_id, book_id)
 
     if not loan:
         print("Active loan not found")
@@ -171,18 +61,7 @@ def return_book(db, member_id, book_id):
     late = (today - due).days
     fine = late if late > 0 else 0
 
-    c.execute(
-        "UPDATE loans SET returned=1 WHERE id=?",
-        (loan_id,)
-    )
-
-    c.execute(
-        """UPDATE books SET available=available+1
-           WHERE id=? AND available < total_copies""",
-        (book_id,)
-    )
-
-    db.commit()
+    db.close_loan(loan_id, book_id)
 
     print("Book returned")
 
