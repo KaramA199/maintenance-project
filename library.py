@@ -14,7 +14,8 @@ def search_books(db, text):
               "(" + str(row[3]) + " of " + str(row[4]) + " copies)")
 
     return rows
-def borrow(db, member_id, book_id):
+def validate_member(db, member_id):
+    """Validation: the member must exist and be active."""
     member = db.find_member(member_id)
 
     if not member:
@@ -25,6 +26,9 @@ def borrow(db, member_id, book_id):
         print("Member is not active")
         return False
 
+    return True
+def check_availability(db, book_id):
+    """Availability check: the book must exist and have a copy on the shelf."""
     book = db.find_book(book_id)
 
     if not book:
@@ -35,16 +39,34 @@ def borrow(db, member_id, book_id):
         print("Book is unavailable")
         return False
 
+    return True
+def check_borrow_limit(db, member_id):
+    """Borrow-limit check: a member may have at most 3 active loans."""
     if db.count_active_loans(member_id) >= 3:
         print("Borrowing limit reached")
         return False
 
+    return True
+def create_loan(db, member_id, book_id):
+    """Record creation: save the loan with a due date 14 days from today."""
     today = datetime.now()
     due = today + timedelta(days=14)
 
     db.add_loan(member_id, book_id, today.isoformat(), due.isoformat())
 
     print("Book borrowed. Due:", due.date())
+def borrow(db, member_id, book_id):
+    """Borrow a book: run the three checks in order, then create the loan."""
+    if not validate_member(db, member_id):
+        return False
+
+    if not check_availability(db, book_id):
+        return False
+
+    if not check_borrow_limit(db, member_id):
+        return False
+
+    create_loan(db, member_id, book_id)
 
     return True
 def return_book(db, member_id, book_id):
