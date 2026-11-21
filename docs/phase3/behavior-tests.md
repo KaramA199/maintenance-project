@@ -54,8 +54,7 @@ python -m unittest discover -s tests -v
 | MR-02 draft branch, which includes MR-01 (SQLite store), checked on 21/11 | 11 / 12 pass. Only test 07 fails, as expected after MR-01 (see the note below) |
 | MR-01 (#16–#18), with test 07 updated to the new R3, 21/11 | 12 / 12 pass. The updated test 07 fails on the legacy code, as it should, because the legacy code has no copies |
 | MR-02 (#19–#21), SQLite store, 21/11 | 12 / 12 pass. On the JSON store, the 7 tests that need no SQL preparation pass |
-
-The same command will be run again for MR-02 (task #21) and after the refactorings (task #27), and the results added to this table.
+| After refactorings #24–#26 (task #27), SQLite store, 21/11 | 12 / 12 pass, after each of the three refactoring commits. Details in `refactoring-log.md` |
 
 ### Note on MR-01
 
