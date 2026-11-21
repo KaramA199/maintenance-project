@@ -1,9 +1,9 @@
 # MR-02: Replacing the Database Implementation
-Task: #19–#21 | Owner: Nasser Ali Atef | Status: draft | Date: 19/11
+Task: #19–#21 | Owner: Nasser Ali Atef | Status: done | Date: 19/11
 
 ## Report summary
 
-DRAFT: Nasser to rewrite in his own words. MR-02 asks to replace the current database implementation while keeping the business functionality unchanged. We classify it as adaptive maintenance, because the system has to fit a changed data environment. In the course's activity-based classification, it is an enhancement that changes the implementation without changing any requirement. Impact analysis, based on task #12, found that every function depends on SQLite. 17 SQL statements are spread across four functions, plus main(), which closes the connection, and all three tables are affected. The design follows the course's database wrapper and gateway idea. A new data-access layer, storage.py, now holds every database operation behind one set of methods, and library.py calls those methods instead of writing SQL. Two stores implement the layer: a JSON file store, which is the new default, and the old SQLite database, kept as a fallback. An existing library.db is converted automatically on first start. The same scenario gives identical output on the old code and on both stores, so the business behavior did not change.
+MR-02 asks to replace the current database implementation while keeping the business functionality unchanged. It is adaptive maintenance, because the system must adapt to a new data environment, and an enhancement that changes the implementation without changing any requirement. The impact analysis (Table 6) showed that all 5 functions and all 3 tables depended on SQLite through 17 SQL statements. Following the course's database wrapper idea, we added a data-access layer, storage.py, which holds every database operation behind eight methods, so library.py no longer contains any SQL. Two stores implement the layer: a JSON file store, which is the new default, and the old SQLite database, kept as a fallback. An existing library.db is converted to the new store automatically on first start. The behavior tests pass 12 of 12 on the SQLite store, the tests that need no SQL pass on the JSON store, and the same scenario gives identical output on both stores, so the business behavior did not change.
 
 ## Details
 
@@ -138,17 +138,22 @@ The code is longer because there are now two stores, but the business logic no l
 | A legacy `library.db` with an active loan, opened by MR-02 (default JSON) | data converted; book shown as unavailable; returning it charged the fine; the next loan got ID 2 |
 | Full menu session with `python library.py` (search, borrow, return, invalid choice, exit) | same messages as before; `library.json` created in the working folder |
 
-Muayyad's behavior tests (#23) are not on GitHub yet. When they arrive, they must be run on both stores. This is the check PLAN.md asks for in task #21.
+Behavior tests (#23, `python -m unittest discover -s tests -v`), on 21/11:
+
+| Store | Result |
+|---|---|
+| SQLite (`LMS_BACKEND=sqlite`, the tests' default) | 12 / 12 pass, the same as on MR-01 |
+| JSON (`LMS_BACKEND=json`) | the 7 tests that need no SQL to prepare data (01, 02, 03, 04, 06, 10, 12) pass. The other 5 change data with SQL before the check, so they can only run on SQLite; the scripted scenario above covers the same rules on the JSON store. |
 
 ### Notes for the team
 
-- **Phase 3 (Muayyad):** "direct DB access" is now fixed by MR-02, so pick refactorings from the other smells: the long `borrow()`, mixed printing and rules, magic numbers, and tuple indexes (task #13).
+- **Phase 3 (#24–#27):** "direct DB access" is now fixed by MR-02, so pick refactorings from the other smells: the long `borrow()`, mixed printing and rules, magic numbers, and tuple indexes (task #13).
 - **Final metrics (Abdulwahab, #34):** pass both `library.py` and `storage.py` to radon and `tools/metrics.py`.
 - **Open question:** if the instructor expects a specific DBMS, add one more class to `storage.py` with the same eight methods. Nothing else changes.
 
 ### Report handoff: section 4.2 (170-word budget)
 
-DRAFT: Nasser to rewrite. MR-02 replaces the database implementation without changing business functionality. It is adaptive maintenance, and an enhancement that changes the implementation but not the requirements. Impact analysis (Table 6) found that all five functions and all three tables depended on SQLite through 17 SQL statements. Following the course's database wrapper and gateway idea, we added a data-access layer, storage.py, that holds every database operation behind eight methods. library.py now calls these methods and contains no SQL. Two stores implement the layer: a JSON file store as the new default, and the old SQLite database as a fallback. An existing library.db is converted automatically on first start. Running the same scenario on the old code and on both stores gave identical output, including search wildcards and late fines, which shows the business behavior is unchanged.
+MR-02 asks to replace the current database implementation while keeping the business functionality unchanged. It is adaptive maintenance, because the system must adapt to a new data environment, and an enhancement that changes the implementation without changing any requirement. The impact analysis (Table 6) showed that all 5 functions and all 3 tables depended on SQLite through 17 SQL statements. Following the course's database wrapper idea, we added a data-access layer, storage.py, which holds every database operation behind eight methods, so library.py no longer contains any SQL. Two stores implement the layer: a JSON file store, which is the new default, and the old SQLite database, kept as a fallback. An existing library.db is converted to the new store automatically on first start. The behavior tests pass 12 of 12 on the SQLite store, the tests that need no SQL pass on the JSON store, and the same scenario gives identical output on both stores, so the business behavior did not change.
 
 ## Screenshots
 
@@ -160,4 +165,4 @@ None yet. The verification table comes from scripted runs. A screenshot of `libr
 2. SE431 Fall 2026 Project Description (Phase 2, MR-02).
 3. Project files: `docs/phase1/dependencies.md` (#12), `docs/phase1/code-smells.md` (#13), `docs/phase1/baseline-metrics.md` (#14), `docs/phase2/mr01-multiple-copies.md`.
 4. Python documentation: `json` and `os.replace`, https://docs.python.org/3/library/json.html and https://docs.python.org/3/library/os.html#os.replace. SQLite documentation, "The LIKE operator", https://www.sqlite.org/lang_expr.html#like.
-5. Claude (Anthropic, Claude Code), 19/11/2026: implemented the layer and both stores, ran the comparisons and drafted this file. Nasser must go through it and rewrite the summary and report text in his own words before the pull request.
+5. Claude (Anthropic, Claude Code), 19–21/11/2026: implemented the layer and both stores, ran the comparisons and the behavior tests, and drafted this file, including the Report summary, at Nasser's request. Nasser reviewed it.
