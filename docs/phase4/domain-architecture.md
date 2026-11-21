@@ -118,7 +118,7 @@ classDiagram
 | `LoanStore` (core) | Saving and reading data, hidden behind a few methods: find, search, count active loans, add and close loans | Loan record |
 | `Book`, `Equipment` (extensions) | The item details of each system. `Item.name` holds a book's title or an equipment item's name | Item details, search fields |
 | `Item.available` with `Book.total_copies` or one `Equipment` unit | How many units are on the shelf: for a book, a count of copies up to `total_copies` (MR-01); for equipment, 0 or 1, because each serial number is one unit | Units per item |
-| `EquipmentUser.role` (extension) | Whether the user is a student or staff member (EQ1) | Borrower must exist and be active |
+| `EquipmentUser.role` (extension) | Whether the user is a student or staff member (EQ1) | Borrower data (EQ1) |
 | `LibraryRules`, `EquipmentRules` (extensions) | The values each system chooses, plus the damage fee in the equipment system | Borrowing limit, borrowing period, fine amount, condition check |
 
 ### How each system is built (the second design step)
