@@ -1,6 +1,7 @@
 
 from datetime import datetime, timedelta
 import storage
+from return_service import ReturnService
 def setup():
     # MR-02: the database is reached only through the data-access layer in
     # storage.py, which picks the store (JSON by default, or legacy SQLite).
@@ -70,27 +71,8 @@ def borrow(db, member_id, book_id):
 
     return True
 def return_book(db, member_id, book_id):
-    loan = db.find_active_loan(member_id, book_id)
-
-    if not loan:
-        print("Active loan not found")
-        return False
-
-    loan_id = loan[0]
-    due = datetime.fromisoformat(loan[1])
-    today = datetime.now()
-
-    late = (today - due).days
-    fine = late if late > 0 else 0
-
-    db.close_loan(loan_id, book_id)
-
-    print("Book returned")
-
-    if fine:
-        print("Fine:", fine)
-
-    return True
+    """Return a book. The return and fine logic is in ReturnService."""
+    return ReturnService(db).return_book(member_id, book_id)
 def main():
     db = setup()
     while True:
