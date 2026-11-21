@@ -8,13 +8,14 @@ from datetime import datetime
 
 
 class ReturnService:
-    def __init__(self, db):
+    def __init__(self, db, fine_per_day):
         self.db = db
+        self.fine_per_day = fine_per_day
 
     def calculate_fine(self, due_date, return_date):
-        """The fine is 1 per full day late, and 0 for an on-time return."""
-        late = (return_date - due_date).days
-        return late if late > 0 else 0
+        """fine_per_day for each full day late, and 0 for an on-time return."""
+        days_late = (return_date - due_date).days
+        return days_late * self.fine_per_day if days_late > 0 else 0
 
     def return_book(self, member_id, book_id):
         loan = self.db.find_active_loan(member_id, book_id)
@@ -23,9 +24,8 @@ class ReturnService:
             print("Active loan not found")
             return False
 
-        loan_id = loan[0]
-        due = datetime.fromisoformat(loan[1])
-        fine = self.calculate_fine(due, datetime.now())
+        loan_id, due_date = loan
+        fine = self.calculate_fine(datetime.fromisoformat(due_date), datetime.now())
 
         self.db.close_loan(loan_id, book_id)
 

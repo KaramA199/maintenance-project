@@ -2,6 +2,13 @@
 from datetime import datetime, timedelta
 import storage
 from return_service import ReturnService
+
+# Library rules (refactoring #26): these values used to be literals inside
+# borrow() and return_book().
+MAX_BOOKS = 3         # active loans allowed per member
+LOAN_DAYS = 14        # normal borrowing period
+FINE_PER_DAY = 1      # fine for each full day late
+ACTIVE = "ACTIVE"     # member status that may borrow
 def setup():
     # MR-02: the database is reached only through the data-access layer in
     # storage.py, which picks the store (JSON by default, or legacy SQLite).
@@ -9,10 +16,10 @@ def setup():
 def search_books(db, text):
     rows = db.search_books(text)
 
-    for row in rows:
-        print(row[0], row[1], "-", row[2],
-              "Available:", bool(row[3]),
-              "(" + str(row[3]) + " of " + str(row[4]) + " copies)")
+    for book_id, title, author, available, total_copies in rows:
+        print(book_id, title, "-", author,
+              "Available:", bool(available),
+              "(" + str(available) + " of " + str(total_copies) + " copies)")
 
     return rows
 def validate_member(db, member_id):
@@ -23,7 +30,9 @@ def validate_member(db, member_id):
         print("Member not found")
         return False
 
-    if member[1] != "ACTIVE":
+    _, status = member
+
+    if status != ACTIVE:
         print("Member is not active")
         return False
 
@@ -36,22 +45,24 @@ def check_availability(db, book_id):
         print("Book not found")
         return False
 
-    if book[0] <= 0:
+    (copies_on_shelf,) = book
+
+    if copies_on_shelf <= 0:
         print("Book is unavailable")
         return False
 
     return True
 def check_borrow_limit(db, member_id):
-    """Borrow-limit check: a member may have at most 3 active loans."""
-    if db.count_active_loans(member_id) >= 3:
+    """Borrow-limit check: a member may have at most MAX_BOOKS active loans."""
+    if db.count_active_loans(member_id) >= MAX_BOOKS:
         print("Borrowing limit reached")
         return False
 
     return True
 def create_loan(db, member_id, book_id):
-    """Record creation: save the loan with a due date 14 days from today."""
+    """Record creation: save the loan with a due date LOAN_DAYS from today."""
     today = datetime.now()
-    due = today + timedelta(days=14)
+    due = today + timedelta(days=LOAN_DAYS)
 
     db.add_loan(member_id, book_id, today.isoformat(), due.isoformat())
 
@@ -72,7 +83,7 @@ def borrow(db, member_id, book_id):
     return True
 def return_book(db, member_id, book_id):
     """Return a book. The return and fine logic is in ReturnService."""
-    return ReturnService(db).return_book(member_id, book_id)
+    return ReturnService(db, FINE_PER_DAY).return_book(member_id, book_id)
 def main():
     db = setup()
     while True:
