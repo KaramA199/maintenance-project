@@ -29,6 +29,14 @@ We measured the legacy code before any change to have a baseline for the final c
 
 All radon settings are left at their defaults; no files are excluded. For the final system, pass every project `.py` file (not the tests) to both tools in the same way.
 
+### Tool update, 21/11 (before task 34)
+
+The first version of `tools/metrics.py` identified functions by name only, and matched calls by method name. That works for the one-file legacy code, but it breaks on a system with several files or classes. For example, on the MR-02 code (`library.py` and `storage.py`) it reported 19 functions instead of 29, and 3 SQL statements instead of 20, because methods with the same name in `SqliteStorage` and `JsonStorage` overwrote each other.
+
+The fixed version identifies every function by file, class and name (for example `storage.py:SqliteStorage.find_book`). It links a call to a project function only when the target can be read from the source: same file, imported module, `self.`, or a variable created from a project class in the same function. Calls through other variables, such as `db.find_book()`, are listed as "unresolved" instead of being guessed.
+
+On the legacy `library.py`, the fixed version prints exactly the same output as the first version, so the baseline below is unchanged and the comparison in task 34 stays fair. Use the fixed version for task 34.
+
 ### Table 9: Legacy System column
 
 | Metric | Legacy system | How it is counted |
