@@ -24,7 +24,7 @@ The test data is what `setup()` creates: members S1 (Ali) and S2 (Sara), both AC
 | 04 | R1 / BR01 | S9 (not a member) borrows book 1 | False, "Member not found" |
 | 05 | R1 / BR02 | S2 set to INACTIVE, borrows book 1 | False, "Member is not active" |
 | 06 | R3 / BR03 | S1 borrows book 99 (does not exist) | False, "Book not found" |
-| 07 | R3 / BR04 | S1 borrows book 1, then S2 borrows book 1 | False, "Book is unavailable" |
+| 07 | R3 / BR04 | Legacy: S1 borrows book 1, then S2 borrows book 1. Updated for MR-01: book 1 set to 2 copies; S1 and S2 each borrow one, then S1 tries again | False, "Book is unavailable" |
 | 08 | R2 / BR05 | S1 borrows books 1, 2, 3, then a 4th book | False, "Borrowing limit reached" |
 | 09 | R4 / BR06 | S1 borrows book 1 | Due date − borrow date = 14 days |
 | 10 | BR08 | S1 returns book 1 without borrowing it | False, "Active loan not found" |
@@ -52,6 +52,7 @@ python -m unittest discover -s tests -v
 |---|---|
 | Legacy system (Commit 01, `library.py` unchanged) | 12 / 12 pass |
 | MR-02 draft branch, which includes MR-01 (SQLite store), checked on 21/11 | 11 / 12 pass. Only test 07 fails, as expected after MR-01 (see the note below) |
+| MR-01 (#16–#18), with test 07 updated to the new R3, 21/11 | 12 / 12 pass. The updated test 07 fails on the legacy code, as it should, because the legacy code has no copies |
 
 The same command will be run again for MR-02 (task #21) and after the refactorings (task #27), and the results added to this table.
 

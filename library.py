@@ -18,9 +18,18 @@ def setup():
             id INTEGER PRIMARY KEY,
             title TEXT,
             author TEXT,
-            available INTEGER
+            available INTEGER,
+            total_copies INTEGER
         )
     """)
+
+    # MR-01: "available" now holds the number of copies on the shelf and
+    # "total_copies" the number the library owns. A database created by the
+    # legacy version has no total_copies column; each of its books had one copy.
+    c.execute("PRAGMA table_info(books)")
+    if "total_copies" not in [col[1] for col in c.fetchall()]:
+        c.execute("ALTER TABLE books ADD COLUMN total_copies INTEGER")
+        c.execute("UPDATE books SET total_copies = 1")
 
     c.execute("""
         CREATE TABLE IF NOT EXISTS loans(
@@ -44,15 +53,15 @@ def setup():
     )
 
     c.execute(
-        "INSERT OR IGNORE INTO books VALUES (1,'Clean Code','Robert Martin',1)"
+        "INSERT OR IGNORE INTO books VALUES (1,'Clean Code','Robert Martin',3,3)"
     )
 
     c.execute(
-        "INSERT OR IGNORE INTO books VALUES (2,'Refactoring','Martin Fowler',1)"
+        "INSERT OR IGNORE INTO books VALUES (2,'Refactoring','Martin Fowler',2,2)"
     )
 
     c.execute(
-        "INSERT OR IGNORE INTO books VALUES (3,'Design Patterns','Gamma et al.',1)"
+        "INSERT OR IGNORE INTO books VALUES (3,'Design Patterns','Gamma et al.',2,2)"
     )
 
     db.commit()
@@ -60,7 +69,7 @@ def setup():
 def search_books(db, text):
     c = db.cursor()
     c.execute(
-        """SELECT id,title,author,available
+        """SELECT id,title,author,available,total_copies
            FROM books
            WHERE title LIKE ? OR author LIKE ?""",
         ("%" + text + "%", "%" + text + "%")
@@ -70,7 +79,8 @@ def search_books(db, text):
 
     for row in rows:
         print(row[0], row[1], "-", row[2],
-              "Available:", bool(row[3]))
+              "Available:", bool(row[3]),
+              "(" + str(row[3]) + " of " + str(row[4]) + " copies)")
 
     return rows
 def borrow(db, member_id, book_id):
@@ -101,7 +111,7 @@ def borrow(db, member_id, book_id):
         print("Book not found")
         return False
 
-    if book[0] == 0:
+    if book[0] <= 0:
         print("Book is unavailable")
         return False
 
@@ -131,7 +141,7 @@ def borrow(db, member_id, book_id):
     )
 
     c.execute(
-        "UPDATE books SET available=0 WHERE id=?",
+        "UPDATE books SET available=available-1 WHERE id=?",
         (book_id,)
     )
 
@@ -167,7 +177,8 @@ def return_book(db, member_id, book_id):
     )
 
     c.execute(
-        "UPDATE books SET available=1 WHERE id=?",
+        """UPDATE books SET available=available+1
+           WHERE id=? AND available < total_copies""",
         (book_id,)
     )
 
