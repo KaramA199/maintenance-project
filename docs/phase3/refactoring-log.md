@@ -1,5 +1,5 @@
 # Refactoring Log
-Task: #24, #25, #26, #27 | Owner: Karam M. Ali | Status: in review | Date: 21/11
+Task: #24, #25, #26, #27 | Owner: Karam M. Ali | Status: draft | Date: 21/11
 
 ## Report summary
 
@@ -34,7 +34,7 @@ The course gives these activities for a refactoring process (course PDF p.271). 
 |---|---|---|---|---|
 | 1 | Decompose `borrow()` (Extract Method), task #24 | Long Method (CS1) | `borrow()`: 33 lines, cyclomatic complexity 6, five jobs in one function | `borrow()`: 14 lines, complexity 4, calls `validate_member`, `check_availability`, `check_borrow_limit`, `create_loan` |
 | 2 | Separate mixed responsibilities (Extract Class), task #25 | Mixed Responsibilities (AP1) | `return_book()`: 22 lines doing the loan lookup, the fine calculation, the update and the messages | `return_book()`: 3 lines; `ReturnService` has `calculate_fine()` (no database, no printing) and `return_book()` |
-| 3 | Replace primitive data / magic numbers (Replace Magic Literal), task #26 | Primitive Obsession (CS6, CS7) | 4 literal rules (3, 14, a fine rate of 1 that was not written anywhere, "ACTIVE"); 9 different row positions (10 uses) such as `member[1]`, `loan[0]`, `row[3]` | 0 literal rules: `MAX_BOOKS`, `LOAN_DAYS`, `FINE_PER_DAY`, `ACTIVE`; 0 row positions: tuples are unpacked into named variables |
+| 3 | Replace primitive data / magic numbers (Replace Magic Literal), task #26 | Primitive Obsession: magic numbers (CS6), positional row access / poor naming (CS7) | 3 literals (3, 14, "ACTIVE") plus 1 implicit rule (a fine rate of 1 that was not written anywhere); 9 different row positions (10 uses) such as `member[1]`, `loan[0]`, `row[3]` | 0 literal or implicit rules: `MAX_BOOKS`, `LOAN_DAYS`, `FINE_PER_DAY`, `ACTIVE`; 0 row positions: tuples are unpacked into named variables |
 
 The smell IDs (CS1, CS6, CS7, AP1) are the ones in `docs/phase1/code-smells.md`.
 
@@ -43,6 +43,7 @@ The smell IDs (CS1, CS6, CS7, AP1) are the ones in `docs/phase1/code-smells.md`.
 **Identify.**
 - After MR-02, `borrow()` still did five jobs in one function: check the member, check the book, check the borrowing limit, create the loan, and print the result.
 - That is the Long Method smell (p.272, CS1 in task #13). The project description names this method directly.
+- It also reduces CS3 (the repeated "look up, check, print, return False" pattern). Each copy of the pattern now sits in its own named function, but the pattern itself is still repeated.
 
 **Behavior preserved.**
 - The checks run in the same order, with the same messages, and each failed check returns `False` the same way.
@@ -140,6 +141,7 @@ def return_book(db, member_id, book_id):
 - `return_book()` went from 22 lines and complexity 4 to 3 lines and complexity 1.
 - The fine rule is now one method with complexity 2. It can be checked without a database, because it only takes two dates.
 - The code has 1 class, where before it had none.
+- AP1 is only partly solved. The fine calculation is fully separated, but `ReturnService.return_book()` still looks up the loan, updates the store and prints the messages. The printing stays there on purpose, so the output does not change.
 
 ### Refactoring 3: replace primitive data and magic numbers (#26)
 
@@ -200,9 +202,11 @@ Measured on the files with business logic: `library.py` on Commit 03, and `libra
 | Highest complexity outside `main()` | 6 | 4 |
 | Functions / classes (`tools/metrics.py`) | 5 / 0 | 12 / 1 |
 | Physical lines (radon `raw`) | 104 | 156 (119 + 37) |
-| Literal rule values in the logic | 4 | 0 |
+| Literal or implicit rule values in the logic | 3 + 1 implicit | 0 |
+| Global variables (`tools/metrics.py`) | 0 | 4 (the new constants) |
+| Functions with console output besides `main()` | 3 | 6 |
 
-The course says that lower coupling, higher cohesion and smaller size usually make a system more maintainable (p.276). Here, complexity per function went down, and each function now has one job, so cohesion went up. But total size went up, because of the new functions, the docstrings and the new file. We accept that trade-off: each part is now small and has one purpose. Task #34 measures the whole final system against the baseline from task #14.
+The course says that lower coupling, higher cohesion and smaller size usually make a system more maintainable (p.276). Here, complexity per function went down, and each function now has one job, which should improve cohesion (we did not measure cohesion). But total size went up, because of the new functions, the docstrings and the new file. We accept that trade-off: each part is now small and has one purpose. Two other counts also went up. The 4 global variables are the new constants, which are read-only values, not shared state. The functions with console output went from 3 to 6, because each check still prints its own message. We kept the printing inside the functions on purpose, so the output stays exactly the same. Task #34 measures the whole final system against the baseline from task #14.
 
 ### Maintain consistency (p.271)
 
@@ -210,7 +214,7 @@ Updated together with the code:
 - the Results table in `behavior-tests.md`;
 - this log.
 
-`docs/phase4/domain-architecture.md` (task #30) already says that the constants from #26 move into `LibraryRules`, and the names used here match that.
+In the Phase 4 reuse design (task #30), these values are expected to move into a `LibraryRules` class.
 
 ### Smells not handled here
 
@@ -247,7 +251,7 @@ LMS_BACKEND=json python library.py < tests/menu_session.txt
 
 ![Behavior tests passing after the refactoring](../img/phase3/tests-after-refactoring.png)
 
-*Behavior tests after refactorings #24–#26 (12 tests, OK).*
+*Behavior tests after refactorings #24–#26, run on commit `fca226e` (12 tests, OK).*
 
 ## Sources
 
