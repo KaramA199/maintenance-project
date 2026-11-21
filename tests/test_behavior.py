@@ -96,14 +96,18 @@ class LibraryBehaviorTest(unittest.TestCase):
         self.assertFalse(result)
         self.assertIn("Book not found", output)
 
-    def test_07_borrowed_book_is_unavailable_to_others(self):
-        """BR04 / R3: a book that is already borrowed cannot be borrowed again.
+    def test_07_book_is_unavailable_when_all_copies_are_borrowed(self):
+        """BR04 / R3 as changed by MR-01: a book can be borrowed while a copy is
+        on the shelf, and is unavailable once every copy is borrowed.
 
-        Expected to change after MR-01 (multiple copies), which deliberately
-        changes requirement R3.
+        Before MR-01 each book had one copy, so the second borrow was refused.
         """
-        self.call(library.borrow, "S1", 1)
-        result, output = self.call(library.borrow, "S2", 1)
+        self.run_sql("UPDATE books SET available=2, total_copies=2 WHERE id=1")
+        result, _ = self.call(library.borrow, "S1", 1)
+        self.assertTrue(result)
+        result, _ = self.call(library.borrow, "S2", 1)
+        self.assertTrue(result)
+        result, output = self.call(library.borrow, "S1", 1)
         self.assertFalse(result)
         self.assertIn("Book is unavailable", output)
 

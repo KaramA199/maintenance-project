@@ -1,5 +1,5 @@
 # MR-01: Multiple Copies of Each Book
-Task: #16–#18 | Owner: Nasser Ali Atef | Status: draft | Date: 19/11
+Task: #16–#18 | Owner: Nasser Ali Atef | Status: done | Date: 19/11
 
 ## Report summary
 
@@ -40,7 +40,7 @@ Method: the course's impact-analysis process (pp. 213–214). The **starting imp
 Actual impact set after implementation: the same four functions and one table, so there was no false positive and no newly discovered impact (p. 214).
 
 Ripple to other tasks:
-- Muayyad's behavior tests (#23) must expect the new search text and the new borrowing results.
+- The behavior tests (#23): test 07 was updated to the new requirement 3; the other 11 pass unchanged.
 - Abdulwahab's final metrics will include the new migration branch in `setup()`.
 
 ### 4.1.3 Proposed design
@@ -110,6 +110,8 @@ Unchanged lines:
 - member not found, book not found, return without a loan;
 - the due date (today + 14 days);
 - every return value except those listed above.
+
+Behavior tests (#23, `python -m unittest discover -s tests -v`): 11 of 12 passed unchanged. Test 07 failed as expected, because it checked the old one-copy rule. It was updated to the new requirement 3: with 2 copies, two members can borrow, and a third borrow gets "Book is unavailable". After the update, 12 of 12 pass, and the updated test 07 fails on the legacy code.
 
 Migration test:
 1. A database made by the legacy code with one active loan was opened by the new code. The books got `total_copies = 1`.
