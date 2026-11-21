@@ -5,7 +5,7 @@ Impact / likelihood: L = low, M = medium, H = high. Status is updated as the pro
 | # | Risk / issue | Impact | Likelihood | Mitigation / resolution | Owner | Status |
 |---|---|---|---|---|---|---|
 | 1 | Only one week between start of the work and the 22/11 deadline | H | H | Internal milestone dates on the board; start parallel tasks as soon as the repo and legacy setup are done | Karam | Open |
-| 2 | A member is unavailable or falls behind | H | M | Daily check on the board; tasks reassigned within 24 h of a missed date; everyone reviews all sections | Karam | Open |
+| 2 | A member is unavailable or falls behind | H | M | Daily check on the board; tasks reassigned within 24 h of a missed date; everyone reviews all sections. Occurred 21/11: open tasks redistributed within the team | Karam | Occurred – handled |
 | 3 | Merge conflicts on `library.py` (MR-01 changes `borrow()` while it is also refactored) | M | H | Refactoring starts only after Commit 03; each member works in their own files/folders and commits their own work | Nasser, Muayyad | Open |
 | 4 | Baseline and final metrics are not comparable (different tool or settings) | M | M | Record tool and settings with the baseline; reuse them unchanged for the final measurement | Nasser, Abdulwahab | Open |
 | 5 | Behavior changes during refactoring or the database swap | H | M | Behavior tests written on the legacy code first and re-run after refactoring and MR-02 | Muayyad | Open |
