@@ -1,5 +1,5 @@
 # Refactoring Log
-Task: #24, #25, #26, #27 | Owner: Karam M. Ali | Status: draft | Date: 21/11
+Task: #24, #25, #26, #27 | Owner: Karam M. Ali | Status: done | Date: 21/11
 
 ## Report summary
 
