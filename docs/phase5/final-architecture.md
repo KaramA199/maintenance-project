@@ -167,7 +167,7 @@ These items are not solved by the final system. Task #34 measures them, and they
 
 ![Figure 6: Final (to-be) architecture](../img/phase5/final-architecture.png)
 
-*Figure 6: Final (to-be) architecture, rendered from the Mermaid diagram above with mermaid-cli.*
+*Figure 6: Final (to-be) architecture, rendered from the Mermaid diagram above with mermaid-cli 12.2.0 (`flowchart.wrappingWidth` 420, scale 2).*
 
 ## Sources
 
