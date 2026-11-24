@@ -1,5 +1,15 @@
+"""Library Management System: console menu and borrowing rules.
 
+This module holds the menu (main), the search, and the borrow checks, with the
+library rules as named constants. Returning a book and the late fine are in
+return_service.py (ReturnService). All data access goes through storage.py,
+which uses a JSON file by default or the legacy SQLite database when
+LMS_BACKEND=sqlite.
+
+Run with:  python library.py
+"""
 from datetime import datetime, timedelta
+
 import storage
 from return_service import ReturnService
 
@@ -9,10 +19,14 @@ MAX_BOOKS = 3         # active loans allowed per member
 LOAN_DAYS = 14        # normal borrowing period
 FINE_PER_DAY = 1      # fine for each full day late
 ACTIVE = "ACTIVE"     # member status that may borrow
+
+
 def setup():
     # MR-02: the database is reached only through the data-access layer in
     # storage.py, which picks the store (JSON by default, or legacy SQLite).
     return storage.open_storage()
+
+
 def search_books(db, text):
     rows = db.search_books(text)
 
@@ -22,6 +36,8 @@ def search_books(db, text):
               "(" + str(available) + " of " + str(total_copies) + " copies)")
 
     return rows
+
+
 def validate_member(db, member_id):
     """Validation: the member must exist and be active."""
     member = db.find_member(member_id)
@@ -37,6 +53,8 @@ def validate_member(db, member_id):
         return False
 
     return True
+
+
 def check_availability(db, book_id):
     """Availability check: the book must exist and have a copy on the shelf."""
     book = db.find_book(book_id)
@@ -52,6 +70,8 @@ def check_availability(db, book_id):
         return False
 
     return True
+
+
 def check_borrow_limit(db, member_id):
     """Borrow-limit check: a member may have at most MAX_BOOKS active loans."""
     if db.count_active_loans(member_id) >= MAX_BOOKS:
@@ -59,6 +79,8 @@ def check_borrow_limit(db, member_id):
         return False
 
     return True
+
+
 def create_loan(db, member_id, book_id):
     """Record creation: save the loan with a due date LOAN_DAYS from today."""
     today = datetime.now()
@@ -67,6 +89,8 @@ def create_loan(db, member_id, book_id):
     db.add_loan(member_id, book_id, today.isoformat(), due.isoformat())
 
     print("Book borrowed. Due:", due.date())
+
+
 def borrow(db, member_id, book_id):
     """Borrow a book: run the three checks in order, then create the loan."""
     if not validate_member(db, member_id):
@@ -81,9 +105,20 @@ def borrow(db, member_id, book_id):
     create_loan(db, member_id, book_id)
 
     return True
+
+
 def return_book(db, member_id, book_id):
     """Return a book. The return and fine logic is in ReturnService."""
     return ReturnService(db, FINE_PER_DAY).return_book(member_id, book_id)
+
+
+def read_ids():
+    """Ask for the member ID and the book ID (menu choices 2 and 3)."""
+    member = input("Member ID: ")
+    book = int(input("Book ID: "))
+    return member, book
+
+
 def main():
     db = setup()
     while True:
@@ -100,13 +135,11 @@ def main():
             search_books(db, text)
 
         elif choice == "2":
-            member = input("Member ID: ")
-            book = int(input("Book ID: "))
+            member, book = read_ids()
             borrow(db, member, book)
 
         elif choice == "3":
-            member = input("Member ID: ")
-            book = int(input("Book ID: "))
+            member, book = read_ids()
             return_book(db, member, book)
 
         elif choice == "4":
@@ -115,5 +148,7 @@ def main():
 
         else:
             print("Invalid choice")
+
+
 if __name__ == "__main__":
     main()

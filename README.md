@@ -39,15 +39,51 @@ The Git history follows the project phases, one milestone commit per phase:
 | 05 | Add Equipment Borrowing System analysis for re-use | Phase 4 |
 | 06 | Final reengineered system | Phase 5 / final |
 
-## Running the legacy system
+## How to run
 
-Requires Python 3.8+ (standard library only).
+Requires Python 3.8+ (standard library only). From the repository root:
 
 ```bash
 python library.py
 ```
 
-See `docs/00-environment-setup.md` for details.
+Menu: `1` Search, `2` Borrow, `3` Return, `4` Exit. The seed data has members `S1` and `S2` and books `1` to `3`.
+
+The data is stored through the data-access layer in `storage.py` (MR-02). The environment variable `LMS_BACKEND` picks the store:
+
+| `LMS_BACKEND` | Store | File (in the current folder) |
+|---|---|---|
+| not set, or `json` | JSON file (default) | `library.json` |
+| `sqlite` | the legacy SQLite database | `library.db` |
+
+```bash
+# Git Bash / Linux / macOS
+LMS_BACKEND=sqlite python library.py
+```
+
+```powershell
+# Windows PowerShell
+$env:LMS_BACKEND = "sqlite"; python library.py
+```
+
+To start again with only the seed data, delete `library.json` or `library.db`. See `docs/00-environment-setup.md` for the original setup notes.
+
+## How to run the tests
+
+The 12 behavior-preservation tests (task #23) use Python's built-in `unittest`. From the repository root:
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+The result must be `Ran 12 tests` and `OK`. Each test runs in a temporary folder, so your own `library.json` or `library.db` is not touched.
+
+To compare the menu output of two versions, pipe the scripted session into the program in an empty folder, once per store:
+
+```bash
+LMS_BACKEND=json python library.py < tests/menu_session.txt
+LMS_BACKEND=sqlite python library.py < tests/menu_session.txt
+```
 
 ## Working agreement
 
