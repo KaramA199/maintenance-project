@@ -8,8 +8,8 @@ The project description asks for a quality evaluation of the reengineered archit
 |---|---|---|---|---|
 | #32 | [final-architecture.md](final-architecture.md) | Final clean-up of the code, README "how to run" and "how to run the tests", to-be architecture compared with the as-is one | 7.2, Figure 6 | Muayyad |
 | #33 | this index | Commit 06 and the check of the Git history | 8.1, 8.2 (Table 10, Figure 7) | Muayyad |
-| #34 | `final-metrics.md` (to come) | Final measurement with the same tools and settings as the baseline (#14) | 7.2, Table 9 | Abdulwahab |
-| #35 | `comparison.md` (to come) | Legacy versus reengineered comparison | 7.3 | Abdulwahab |
+| #34 | [final-metrics.md](final-metrics.md) | Final measurement with the same tools and settings as the baseline (#14) | 7.2, Table 9 | Abdulwahab |
+| #35 | [comparison.md](comparison.md) | Legacy versus reengineered comparison | 7.3 | Abdulwahab |
 
 The final system:
 - `library.py`: the menu, the search and the borrow checks, with the rules as named constants.
