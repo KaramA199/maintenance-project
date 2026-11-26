@@ -60,4 +60,4 @@ None required: the responsibility table is the deliverable. Function ranges were
 ## Sources
 
 1. Project primary sources: `library.py`, `README.md`, `PLAN.md` and all three existing `docs/00-...`, `01-...`, `02-...` files; task #11 and section 3.5 in `SE431-ProjectReport.docx` (Microsoft Word MCP, 16/11/2026).
-2. OpenAI GPT-6.1 Sol, via OpenCode, 16/11/2026: assisted source tracing, AST checks and drafting. Abdulwahab must verify and rewrite the draft before submission under PLAN.md's authorship rule.
+2. OpenAI GPT-6.1 Sol, via OpenCode, 16/11/2026: assisted source tracing, AST checks and drafting. Reviewed and verified by Abdulwahab.

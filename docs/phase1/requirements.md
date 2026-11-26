@@ -61,4 +61,4 @@ None required: Table 2, exact code ranges and the recorded probe outcomes are th
 
 1. Project primary sources: `library.py`, `README.md`, `PLAN.md`, and all three existing setup/charter/risk documents; task #7, Original Requirements and section 3.1 in `SE431-ProjectReport.docx` (Microsoft Word MCP, 16/11/2026).
 2. Python documentation, [datetime: timedelta objects](https://docs.python.org/3/library/datetime.html#timedelta-objects), accessed 16/11/2026; used to interpret the fine qualification.
-3. OpenAI GPT-6.1 Sol, via OpenCode, 16/11/2026: assisted requirements tracing, isolated probes and drafting. Abdulwahab must verify and rewrite the draft before submission under PLAN.md's authorship rule.
+3. OpenAI GPT-6.1 Sol, via OpenCode, 16/11/2026: assisted requirements tracing, isolated probes and drafting. Reviewed and verified by Abdulwahab.

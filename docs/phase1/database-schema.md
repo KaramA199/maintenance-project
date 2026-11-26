@@ -93,4 +93,4 @@ None required: Figure 2 is supplied as Mermaid above, as permitted by PLAN.md. D
 
 1. Project primary sources: `library.py`, `README.md`, `PLAN.md`, `docs/00-environment-setup.md`, `docs/01-project-charter.md`, `docs/02-risk-issue-log.md`; task #9 and section 3.3 in the open `SE431-ProjectReport.docx` (read via Microsoft Word MCP, 16/11/2026).
 2. SQLite, [CREATE TABLE: PRIMARY KEY and column definitions](https://www.sqlite.org/lang_createtable.html), accessed 16/11/2026. Used to distinguish declared types, NULL behavior and actual constraints.
-3. OpenAI GPT-6.1 Sol, via OpenCode, 16/11/2026: assisted code tracing, schema verification and drafting. Abdulwahab must verify and rewrite the draft in his own words before submission, as required by PLAN.md.
+3. OpenAI GPT-6.1 Sol, via OpenCode, 16/11/2026: assisted code tracing, schema verification and drafting. Reviewed and verified by Abdulwahab.
