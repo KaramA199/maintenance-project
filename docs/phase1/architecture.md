@@ -91,4 +91,4 @@ None required: Figure 3 is provided as Mermaid, as allowed by PLAN.md. It was de
 ## Sources
 
 1. Project primary sources: `library.py`, `README.md`, `PLAN.md`, `docs/00-environment-setup.md`, `docs/01-project-charter.md`, `docs/02-risk-issue-log.md`; task #10 and section 3.4 in `SE431-ProjectReport.docx` (Microsoft Word MCP, 16/11/2026).
-2. OpenAI GPT-6.1 Sol, via OpenCode, 16/11/2026: assisted entry-to-exit source tracing, diagramming and drafting. Abdulwahab must verify and rewrite the draft before submission under PLAN.md's authorship rule.
+2. OpenAI GPT-6.1 Sol, via OpenCode, 16/11/2026: assisted entry-to-exit source tracing, diagramming and drafting. Reviewed and verified by Abdulwahab.
