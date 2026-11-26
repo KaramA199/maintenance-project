@@ -1,26 +1,19 @@
 # PLAN.md: how we work
 
-Read this first, whether you are a team member or an AI agent working for one. The project is the SE431 Fall 2026 legacy Library Management System (LMS) reengineering. The deadline is **22/11/2026, 11:59 PM**.
+Read this first, whether you are a team member or an AI agent working for one. The project is the SE431 Fall 2026 legacy Library Management System (LMS) reengineering. The deadline is **29/11/2026**.
 
 Source documents in the repo: `README.md` (overview), `docs/01-project-charter.md`, `docs/02-risk-issue-log.md`, `docs/00-environment-setup.md`.
-The task list (43 tasks, with owners and dependencies) is the table at the start of `SE431.docx`. The board is https://github.com/users/KaramA199/projects/2.
+The task list (43 tasks, with owners and dependencies) is the table at the start of `SE431-ProjectReport.docx`. The board is https://github.com/users/KaramA199/projects/2.
 
-## Current status (22/11, 22:00)
+## Current status (26/11)
 
-Read this before starting anything; it says what is finished and what comes next. The deadline is tonight, 23:59.
+Read this before starting anything. The deadline is 29/11/2026.
 
-**On `main`:** Commits 01, 02 and 03; tasks #7 to #14 (Phase 1), #16 to #21 (MR-01 and MR-02), #23 (behavior tests) and #24 to #26 (refactoring, PR #25). The 12 behavior tests pass: `python -m unittest discover -s tests -v`.
+**On `main`:** all six milestone commits (01 to 06) and tasks #1 to #35. Every pull request is merged. The 12 behavior tests pass: `python -m unittest discover -s tests -v`.
 
-**Open pull request:** #22 (#28 to #30, Equipment reuse analysis). Do **not** merge it before Commit 04.
+**Still to do:** the Word report, the slides, the demo video and the submission. Karam has shared each member's remaining tasks in a separate task file.
 
-**Next, in this order:**
-1. Commit 04 on `main`: add `docs/phase3/README.md`, message `04 - Refactor borrowing module` (finishes #27).
-2. Merge #22, then Commit 05 on `main`: add `docs/phase4/README.md`, message `05 - Add Equipment Borrowing System analysis for re-use` (#31).
-3. #32 (branch and PR): light clean-up, `docs/phase5/final-architecture.md` with Figure 6, README "how to run" and "how to run the tests". Open items for it are listed under "Smells not handled here" in `docs/phase3/refactoring-log.md`.
-4. #33: add `docs/phase5/README.md`, Commit 06 `06 - Final reengineered system`, check `git log --oneline --first-parent main`.
-5. #34 and #35 (final metrics and comparison) after Commit 06, with the fixed `tools/metrics.py`.
-
-**Word report:** sections 2, 5.1 to 5.3 and 6.1 to 6.3 are written. Still placeholders: 1, 3.6, 3.7, 4.1, 4.2, 7, 8, 9, 10 and References.
+**Word report:** sections 3.6, 3.7 and 4 (Nasser) and 7.1 to 7.3 (Abdulwahab) are still placeholders.
 
 ## 1. Rules
 
