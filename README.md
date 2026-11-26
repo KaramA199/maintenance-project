@@ -4,7 +4,7 @@ Course project for **SE431 – Software Maintenance and Evolution** (Fall 2026),
 
 A small legacy Library Management System (LMS, ~100 LOC, Python + SQLite) that we analyze, maintain, refactor and reengineer, and for which we study reuse with an Equipment Borrowing System.
 
-**Deadline:** 22/11/2026, 11:59 PM
+**Deadline:** 29/11/2026
 
 ## Team
 
@@ -41,7 +41,7 @@ The Git history follows the project phases, one milestone commit per phase:
 
 ## How to run
 
-Requires Python 3.8+ (standard library only). From the repository root:
+Requires Python 3.10+ (standard library only). From the repository root:
 
 ```bash
 python library.py

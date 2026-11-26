@@ -1,6 +1,6 @@
 # Phase 1: Program Comprehension Analysis
 
-Milestone: Commit 02, "02 - Program comprehension analysis". It marks the end of Phase 1. All Phase 1 tasks were merged into `main` through their own pull requests, and the legacy `library.py` was not changed during this phase.
+Milestone: Commit 02, "02 - Program comprehension analysis". It marks the end of Phase 1. Tasks #12 to #14 were merged into `main` through pull requests, tasks #7 to #11 were merged from their own branches without a pull request, and the legacy `library.py` was not changed during this phase.
 
 The goal was to understand the legacy Library Management System through program comprehension and reverse engineering before changing it.
 
