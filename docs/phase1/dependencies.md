@@ -169,7 +169,9 @@ The call graph was flat, as main() only calls the other functions, but there is 
 
 ## Screenshots
 
-None required: Figure 4 and the PDG are Mermaid diagrams in this file, as PLAN.md allows. Export Figure 4 to `docs/img/phase1/dependencies.png` when it is placed in the Word report.
+![Figure 4: dependency graph of the legacy library.py](../img/phase1/dependencies.png)
+
+*Figure 4: dependency graph, the same content as the Mermaid diagram above, exported as an image for the Word report (section 3.6).*
 
 ## Sources
 
